@@ -223,6 +223,33 @@
   .sticky.show { transform: translateY(0); }
   .sticky .btn { padding: 14px 10px; font-size: 15px; }
 
+  /* цена: 20 000 зачёркивается, выпрыгивает 2 000 */
+  .price-tag { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+  .detail .price { align-self: flex-start; margin: 4px 0 2px; }
+  .price-cap { font-size: 14px; color: var(--muted); font-weight: 600; }
+  .price { position: relative; display: inline-flex; align-items: center; gap: 18px; font-family: 'Unbounded', sans-serif; font-weight: 900; line-height: 1; }
+  .price .old { position: relative; font-size: 26px; color: #9C8A70; white-space: nowrap; transition: opacity .5s 1s, transform .5s 1s; }
+  .price .old::after { content: ""; position: absolute; left: -6%; right: -6%; top: 50%; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #B8862F, #E2C17E); transform: scaleX(0) rotate(-9deg); transform-origin: left center; transition: transform .45s cubic-bezier(.6, 0, .3, 1) .45s; }
+  .price .new { font-size: 46px; white-space: nowrap; opacity: 0; transform: scale(.3) translateY(12px); }
+  .price.in .old::after { transform: scaleX(1) rotate(-9deg); }
+  .price.in .old { opacity: .5; transform: scale(.88) translateY(-3px); }
+  .price.in .new { animation: pop .75s cubic-bezier(.2, 1.7, .4, 1) 1.15s forwards, shine 5.5s ease-in-out 2s infinite; }
+  @keyframes pop { to { opacity: 1; transform: none; } }
+  .price .burst { position: absolute; right: -6px; top: -10px; width: 90px; height: 70px; pointer-events: none; }
+  .price .burst i { position: absolute; width: 12px; height: 12px; opacity: 0; color: #D9A94E; font-style: normal; font-size: 16px; line-height: 1; }
+  .price .burst i:nth-child(1) { left: 10px; top: 0; }
+  .price .burst i:nth-child(2) { right: 0; top: 18px; font-size: 12px; }
+  .price .burst i:nth-child(3) { left: 46px; top: -12px; font-size: 20px; }
+  .price.in .burst i { animation: burst 1s ease-out 1.5s forwards; }
+  .price.in .burst i:nth-child(2) { animation-delay: 1.62s; }
+  .price.in .burst i:nth-child(3) { animation-delay: 1.72s; }
+  @keyframes burst { 0% { opacity: 0; transform: scale(.2) rotate(0); } 40% { opacity: 1; transform: scale(1.3) rotate(40deg); } 100% { opacity: 0; transform: scale(.6) rotate(90deg) translateY(-10px); } }
+  .price.small .old { font-size: 16px; }
+  .price.small .new { font-size: 24px; }
+  .price.small { gap: 10px; }
+  .final-box .price .old { color: #A8977B; }
+  .final-box .price-cap { color: var(--on-dark-muted); }
+
   /* появление при прокрутке */
   .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
   .reveal.in { opacity: 1; transform: none; }
@@ -255,6 +282,8 @@
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
     .reveal, .stagger > * { opacity: 1; transform: none; }
+    .price .new { opacity: 1; transform: none; }
+    .price .old::after { transform: scaleX(1) rotate(-9deg); }
   }
 </style>
 </head>
@@ -281,6 +310,10 @@
       <h1><span class="gold" style="white-space:nowrap">ИИ‑сотрудник</span><span class="sub gold">в твоём телефоне за 90 минут</span></h1>
       <p class="hero-sub">Без опыта и платных подписок</p>
       <p class="hero-pain">SMM-щик стоит <b>200 000 ₸ в месяц</b>, менеджер в директ ещё <b>150 000 ₸</b>. Покажу, как настроить ИИ, который пишет, отвечает и продаёт вместо них, и как сделать, чтобы это работало само.</p>
+      <div class="price-tag">
+        <span class="price-cap">Консультация маркетолога стоит от 20 000 ₸. На практикуме:</span>
+        <div class="price"><span class="old">20 000 ₸</span><span class="new gold">2 000 ₸</span><span class="burst" aria-hidden="true"><i>✦</i><i>✦</i><i>✦</i></span></div>
+      </div>
       <div class="ctas">
         <a class="btn btn-gold" data-tg href="#">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3 18.8 19c-.2 1-.8 1.3-1.7.8l-4.6-3.4-2.2 2.1c-.2.3-.5.5-1 .5l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2L7 13.1 2.4 11.7c-1-.3-1-1 .2-1.5l18-6.9c.8-.3 1.5.2 1.3 1Z"/></svg>
@@ -435,7 +468,7 @@
     <div class="details stagger">
       <div class="detail"><small>Когда</small><b>Среда, 14 октября</b><span>18:00–19:30</span></div>
       <div class="detail"><small>Где</small><b>Бизнес-клуб A-LIFE</b><a href="https://2gis.kz/kostanay/search/%D0%90%D0%BB%D1%8C-%D0%A4%D0%B0%D1%80%D0%B0%D0%B1%D0%B8%20128" target="_blank" rel="noopener">ул. Аль-Фараби, 128 → на карте</a></div>
-      <div class="detail"><small>Стоимость</small><b>2 000 ₸</b><span>оплата через Kaspi</span></div>
+      <div class="detail"><small>Стоимость</small><div class="price small"><span class="old">20 000 ₸</span><span class="new gold">2 000 ₸</span><span class="burst" aria-hidden="true"><i>✦</i><i>✦</i><i>✦</i></span></div><span>вместо консультации маркетолога · оплата через Kaspi</span></div>
       <div class="detail"><small>Вопросы</small><b><a href="tel:+77471699350" style="color:var(--text);text-decoration:none;font-size:18px">8 747 169 93 50</a></b><span>WhatsApp или звонок</span></div>
     </div>
   </div>
@@ -473,6 +506,10 @@
         <li>Все промпты остаются у тебя в Telegram-боте</li>
         <li>Реальный кейс автоматизации из Костаная</li>
       </ul>
+      <div class="price-tag" style="margin-bottom:24px">
+        <span class="price-cap">Консультация маркетолога — от 20 000 ₸. Практикум:</span>
+        <div class="price"><span class="old">20 000 ₸</span><span class="new gold">2 000 ₸</span><span class="burst" aria-hidden="true"><i>✦</i><i>✦</i><i>✦</i></span></div>
+      </div>
       <div class="ctas">
         <a class="btn btn-gold" data-tg href="#">Записаться за 2 000 ₸</a>
         <a class="btn btn-soft" data-wa href="#">Вопрос в WhatsApp</a>
@@ -556,7 +593,7 @@
   }
   // проверяем позицию на каждой прокрутке: блок, верх которого поднялся выше 90% экрана, показывается
   // (и те, что уже проскочили, — тоже, чтобы после перехода по ссылке ничего не осталось невидимым)
-  let hidden = [...document.querySelectorAll('.reveal, .stagger')];
+  let hidden = [...document.querySelectorAll('.reveal, .stagger, .price')];
   let ticking = false;
   function revealCheck() {
     ticking = false;
