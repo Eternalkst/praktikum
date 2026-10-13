@@ -43,7 +43,22 @@
   h1, h2, h3 { font-family: 'Unbounded', system-ui, sans-serif; line-height: 1.08; letter-spacing: -0.5px; }
   h2 { font-size: clamp(26px, 5vw, 42px); font-weight: 900; margin-top: 10px; }
   h3 { font-size: 18px; font-weight: 700; }
-  .gold { background: linear-gradient(180deg, #C6943A 0%, #8A5F22 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  /* золотой текст с бликом: по буквам проходит полоса света */
+  .gold {
+    background: linear-gradient(110deg, #8A5F22 0%, #B8862F 22%, #E6BE6A 36%, #FFF3CF 44%, #E6BE6A 52%, #B8862F 66%, #8A5F22 100%);
+    background-size: 260% 100%; background-position: 120% 0;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: shine 5.5s ease-in-out infinite;
+  }
+  @keyframes shine { 0% { background-position: 120% 0; } 55%, 100% { background-position: -120% 0; } }
+  /* объём для крупного заголовка: «выдавленные» слои + мягкая тень */
+  .hero h1 .gold:first-child { filter: drop-shadow(0 1.5px 0 #7A5520) drop-shadow(0 6px 8px rgba(110, 74, 24, 0.28)); }
+  .hero h1 .sub { animation-delay: .6s; }
+  @media (min-width: 760px) {
+    .hero h1 .gold:first-child { filter: drop-shadow(0 1px 0 #F2DCA6) drop-shadow(0 2px 0 #A87A2C) drop-shadow(0 2px 0 #8A5F22) drop-shadow(0 3px 0 #6E4A18) drop-shadow(0 14px 18px rgba(110, 74, 24, 0.35)); }
+    .hero h1 .sub { filter: drop-shadow(0 1px 0 #A87A2C) drop-shadow(0 6px 10px rgba(110, 74, 24, 0.2)); }
+  }
+  h2 .gold { filter: drop-shadow(0 2px 0 #A87A2C) drop-shadow(0 8px 12px rgba(110, 74, 24, 0.22)); }
   .lead { font-size: clamp(16.5px, 2.2vw, 19px); color: var(--muted); max-width: 640px; }
   .sec-head { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
 
@@ -102,10 +117,21 @@
   /* летающие пиксельные иконки */
   .px { position: absolute; z-index: 1; pointer-events: none; image-rendering: pixelated; filter: drop-shadow(0 8px 10px rgba(122, 85, 32, 0.25)); }
   .px svg { width: 100%; height: 100%; display: block; }
-  .f1 { animation: float 6s ease-in-out infinite; }
-  .f2 { animation: float 7.5s ease-in-out -2s infinite; }
-  .f3 { animation: float 5.2s ease-in-out -4s infinite; }
-  @keyframes float { 0%, 100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-14px) rotate(5deg); } }
+  /* летающие иконки поворачиваются в 3D, как будто висят в воздухе */
+  .f1 { animation: float3d 6s ease-in-out infinite; }
+  .f2 { animation: float3d 7.5s ease-in-out -2s infinite; }
+  .f3 { animation: float3d 5.2s ease-in-out -4s infinite; }
+  @keyframes float3d {
+    0%, 100% { transform: perspective(420px) translateY(0) rotateY(-24deg) rotateX(8deg) rotate(-3deg); }
+    50% { transform: perspective(420px) translateY(-16px) rotateY(24deg) rotateX(-6deg) rotate(4deg); }
+  }
+  @keyframes float { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-12px) rotate(2deg); } }
+  /* блик, пробегающий по плашкам на фото */
+  .badge { overflow: hidden; }
+  .badge::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 35%, rgba(255, 246, 220, 0.85) 50%, transparent 65%); background-size: 250% 100%; animation: glint 4.5s ease-in-out infinite; pointer-events: none; }
+  .badge-2::after { animation-delay: 1.5s; }
+  .badge-3::after { animation-delay: 3s; }
+  @keyframes glint { 0% { background-position: 130% 0; } 40%, 100% { background-position: -130% 0; } }
   .twinkle { animation: twinkle 2.6s ease-in-out infinite; }
   @keyframes twinkle { 0%, 100% { opacity: .25; transform: scale(.7); } 50% { opacity: 1; transform: scale(1.1); } }
 
@@ -484,11 +510,31 @@
     shop: ['oooooooooooo', 'orrwwrrwwrro', 'oooooooooooo', '.oggggggggo.', '.ogwwogwwgo.', '.ogwwogwwgo.', '.oggggoooo..', '.oggggowwo..', '.oooooooooo.'],
     lamp: ['..oooooo..', '.onnnnnno.', 'onnnnnnnno', 'odddddddo.', '.oyyyyyyo.', '..oooooo..'],
   };
+  // Объёмная пиксельная иконка: тёмный «торец» со сдвигом (3D-выдавливание),
+  // сами пиксели с подсветкой верхней грани и блик, который пробегает по иконке
+  let pxId = 0;
   function pixelSvg(rows) {
+    const id = 'px' + pxId++;
     const h = rows.length, w = Math.max(...rows.map((r) => r.length));
-    let rects = '';
-    rows.forEach((row, y) => [...row].forEach((c, x) => { if (PAL[c]) rects += `<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="${PAL[c]}"/>`; }));
-    return `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" aria-hidden="true">${rects}</svg>`;
+    const d = 0.5; // глубина объёма
+    let depth = '', face = '', top = '', shine = '';
+    rows.forEach((row, y) => [...row].forEach((c, x) => {
+      if (!PAL[c]) return;
+      for (let k = 3; k >= 1; k--) depth += `<rect x="${x + (d * k) / 3}" y="${y + (d * k) / 3}" width="1.02" height="1.02" fill="#4A3216"/>`;
+      face += `<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="${PAL[c]}"/>`;
+      if (c !== 'o' && c !== 'n' && rows[y - 1]?.[x] !== c) top += `<rect x="${x}" y="${y}" width="1.02" height="0.28" fill="#FFF8E6" opacity=".55"/>`;
+      shine += `<rect x="${x}" y="${y}" width="1.02" height="1.02"/>`;
+    }));
+    const delay = (Math.random() * 3).toFixed(2);
+    return `<svg viewBox="0 0 ${w + d} ${h + d}" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" aria-hidden="true">
+      <defs>
+        <linearGradient id="${id}" gradientUnits="userSpaceOnUse" x1="${-w}" y1="0" x2="0" y2="${h}">
+          <stop offset="0.35" stop-color="#fff" stop-opacity="0"/><stop offset="0.5" stop-color="#fff" stop-opacity="0.9"/><stop offset="0.65" stop-color="#fff" stop-opacity="0"/>
+          <animateTransform attributeName="gradientTransform" type="translate" values="0 0; ${w * 2.2} 0; ${w * 2.2} 0" keyTimes="0; 0.45; 1" dur="3.6s" begin="${delay}s" repeatCount="indefinite"/>
+        </linearGradient>
+      </defs>
+      <g>${depth}</g><g>${face}</g><g>${top}</g><g fill="url(#${id})">${shine}</g>
+    </svg>`;
   }
   document.querySelectorAll('[data-px]').forEach((el) => { el.innerHTML = pixelSvg(ART[el.dataset.px]); });
 
