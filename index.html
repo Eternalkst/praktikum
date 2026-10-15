@@ -420,7 +420,7 @@
       <div class="photo-frame" role="img" aria-label="Валерий Просоленко, ведущий практикума">
         <div class="photo-name"><b>Валерий Просоленко</b><span>ведущий практикума</span></div>
       </div>
-      <div class="badge badge-1"><span data-px="bolt"></span>Заявка дешевле $1</div>
+      <div class="badge badge-1"><span data-px="bolt"></span>Без опыта, с телефона</div>
       <div class="badge badge-2"><span data-px="chat"></span>Бот отвечает 24/7</div>
       <div class="badge badge-3"><span data-px="spark"></span>2 поста в день сами</div>
     </div>
@@ -481,7 +481,7 @@
       <div class="step"><span class="time">0:15</span><div><h3>Настраиваем ИИ-сотрудника</h3><p>ИИ берёт у тебя интервью, собирает паспорт бизнеса и запоминает его навсегда.</p></div></div>
       <div class="step"><span class="time">0:35</span><div><h3>Практика: контент, конкуренты, фото</h3><p>Идеи и сценарии, разбор конкурента, фото себя и товара.</p></div></div>
       <div class="step"><span class="time">1:00</span><div><h3>Продажи и ИИ для жизни</h3><p>Тренажёр продаж голосом, ответы клиентам, ИИ для повседневных задач.</p></div></div>
-      <div class="step"><span class="time">1:10</span><div><h3>Автоматизация бизнеса</h3><p>Реальный кейс из Костаная: контент и общение с клиентами идут без владельца.</p></div></div>
+      <div class="step"><span class="time">1:10</span><div><h3>Автоматизация бизнеса</h3><p>Покажу, как сделать, чтобы контент и общение с клиентами шли без вас.</p></div></div>
     </div>
   </div>
 </section>
@@ -500,29 +500,6 @@
       <div class="who-item"><span class="ico" data-px="robot"></span>Всем, кто хочет использовать ИИ в жизни</div>
     </div>
     <p class="lead reveal" style="margin-top:20px">Опыт с ИИ не нужен. Нужен только телефон.</p>
-  </div>
-</section>
-
-<!-- КЕЙС -->
-<section>
-  <div class="wrap">
-    <div class="case reveal">
-      <span class="px f1" data-px="spark" style="width:26px;height:26px;right:8%;top:30px"></span>
-      <span class="px twinkle" data-px="spark" style="width:16px;height:16px;right:30%;top:60px"></span>
-      <div>
-        <p class="eyebrow">Кейс · Костанай</p>
-        <h2>Аида, массаж лица</h2>
-        <p class="case-lead">Мастер массажа лица и онлайн-клуб по самомассажу. Мы настроили систему: посты выходят сами, бот отвечает клиентам, а бот клуба ведёт участниц, напоминает, дожимает до оплаты и присылает отчёты.</p>
-      </div>
-      <div>
-        <p class="big">&lt; $1</p>
-        <p class="big-sub">стоимость заявки из рекламы</p>
-        <div class="stats">
-          <div class="stat"><b><span data-count="2">2</span> поста в день</b><span>в Instagram и Threads без её участия</span></div>
-          <div class="stat"><b>~<span data-count="127000">127 000</span></b><span>охват аккаунта в месяц</span></div>
-        </div>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -556,7 +533,6 @@
       <div class="facts stagger">
         <div class="fact"><b>📈 5+ лет в маркетинге</b><span>сайты, продвижение, таргет, SEO, продажи</span></div>
         <div class="fact"><b>🤖 2 года в ИИ и автоматизации</b><span>боты, автопостинг, ИИ-ассистенты для бизнеса</span></div>
-        <div class="fact"><b>🔥 Заявки дешевле $1</b><span>у клиентки с автоматизацией и таргетом</span></div>
       </div>
     </div>
   </div>
@@ -620,7 +596,7 @@
         <li>90 минут практики на своём телефоне, под свой бизнес</li>
         <li>Готовый ИИ-сотрудник, который знает твой бизнес</li>
         <li>Все промпты остаются у тебя в Telegram-боте</li>
-        <li>Реальный кейс автоматизации из Костаная</li>
+        <li>Схема автоматизации: посты и ответы клиентам без вас</li>
       </ul>
       <div class="price-tag" style="margin-bottom:24px">
         <span class="price-cap">Консультация маркетолога — от 20 000 ₸. Практикум:</span>
@@ -725,7 +701,7 @@
   document.querySelectorAll('[data-px]').forEach((el) => { el.innerHTML = pixelSvg(ART[el.dataset.px]); });
 
   // Бегущая строка (две копии для бесшовной прокрутки)
-  const chips = ['Без опыта', 'Только телефон', 'Готовые промпты', 'ИИ-сотрудник', 'Фото без фотографа', 'Тренажёр продаж', 'Автопостинг', 'Бот для директа', 'Кейс из Костаная', 'Всё остаётся в боте'];
+  const chips = ['Без опыта', 'Только телефон', 'Готовые промпты', 'ИИ-сотрудник', 'Фото без фотографа', 'Тренажёр продаж', 'Автопостинг', 'Бот для директа', 'Ответы клиентам 24/7', 'Всё остаётся в боте'];
   const chipHtml = chips.map((c) => `<span class="chip"><i>✦</i>${c}</span>`).join('');
   document.getElementById('marquee').innerHTML = chipHtml + chipHtml;
 
