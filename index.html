@@ -256,6 +256,18 @@
   .final-box .price-cap { color: var(--on-dark-muted); }
   .detail .price { align-self: flex-start; }
 
+  /* отзывы */
+  .reviews { display: grid; gap: 14px; }
+  .review { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 22px; display: flex; flex-direction: column; gap: 10px; }
+  .review .stars { color: var(--gold); font-size: 15px; letter-spacing: 2px; }
+  .review p { font-size: 16px; line-height: 1.55; }
+  .review .who { color: var(--muted); font-size: 14px; font-weight: 700; }
+  /* бесплатный разбор */
+  .diag { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; background: linear-gradient(160deg, #FFF3D9 0%, #F6DFAE 100%); border: 1px solid #E2C17E; border-radius: 28px; padding: 28px 22px; }
+  .diag h3 { font-size: 22px; }
+  .diag p { color: var(--muted); max-width: 640px; }
+  @media (min-width: 760px) { .reviews { grid-template-columns: repeat(3, 1fr); } .diag { padding: 40px; } }
+
   /* появление при прокрутке */
   .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
   .reveal.in { opacity: 1; transform: none; }
@@ -481,6 +493,29 @@
   </div>
 </section>
 
+<!-- ОТЗЫВЫ (показываются, когда в боте есть одобренные) -->
+<section id="reviews-section" style="display:none">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Отзывы участников</p>
+      <h2>Что говорят <span class="gold">после практикума</span></h2>
+    </div>
+    <div class="reviews" id="reviews"></div>
+  </div>
+</section>
+
+<!-- БЕСПЛАТНЫЙ РАЗБОР -->
+<section>
+  <div class="wrap">
+    <div class="diag reveal">
+      <p class="eyebrow">Бесплатно</p>
+      <h3>🔍 ИИ-разбор вашего бизнеса за 3 минуты</h3>
+      <p>Ответьте в Telegram-боте на 5 коротких вопросов — и получите персональный план: что автоматизировать первым, что оставить людям и сколько часов в неделю это сэкономит.</p>
+      <a class="btn btn-gold" data-diag href="#">Получить разбор</a>
+    </div>
+  </div>
+</section>
+
 <!-- ВОПРОСЫ -->
 <section style="background:var(--bg-2)">
   <div class="wrap">
@@ -538,7 +573,24 @@
 <script>
   // Ссылки
   const WA = 'https://wa.me/77471699350?text=' + encodeURIComponent('Здравствуйте! У меня вопрос по ИИ-практикуму.');
-  const TG = 'https://t.me/ai_praktikum_kostanay_bot?start=landing';
+  // метка источника: сайт?src=ig → в боте видно, что человек пришёл из Instagram
+  const src = (new URLSearchParams(location.search).get('src') || '').replace(/[^a-z0-9_]/gi, '').slice(0, 20);
+  const TG = 'https://t.me/ai_praktikum_kostanay_bot?start=' + (src ? 'landing_' + src : 'landing');
+  const DIAG = 'https://t.me/ai_praktikum_kostanay_bot?start=diag';
+  document.querySelectorAll('[data-diag]').forEach((a) => { a.href = DIAG; a.target = '_blank'; a.rel = 'noopener'; });
+
+  // отзывы из бота
+  fetch('https://ai-praktikum-bot.prosolenko.workers.dev/reviews')
+    .then((r) => r.json())
+    .then((list) => {
+      if (!Array.isArray(list) || !list.length) return;
+      const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+      document.getElementById('reviews').innerHTML = list.slice(-9).reverse().map((r) =>
+        '<div class="review">' + (r.rating ? '<span class="stars">' + '★'.repeat(Math.round(r.rating / 2)) + '</span>' : '') +
+        '<p>«' + esc(r.text) + '»</p><span class="who">' + esc(r.name) + (r.niche ? ', ' + esc(r.niche) : '') + '</span></div>').join('');
+      document.getElementById('reviews-section').style.display = '';
+    })
+    .catch(() => {});
   document.querySelectorAll('[data-wa]').forEach((a) => { a.href = WA; a.target = '_blank'; a.rel = 'noopener'; });
   document.querySelectorAll('[data-tg]').forEach((a) => { a.href = TG; a.target = '_blank'; a.rel = 'noopener'; });
 
