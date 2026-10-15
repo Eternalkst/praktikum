@@ -342,7 +342,8 @@
   .reviews.run:hover .rv-track, .reviews.run:active .rv-track { animation-play-state: paused; }
   .reviews.run .review { width: min(330px, 80vw); flex: none; }
   .review { display: flex; align-items: flex-end; gap: 8px; }
-  .review .ava { width: 36px; height: 36px; flex: none; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 15px; color: #fff; }
+  .review .ava img { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+  .review .ava { position: relative; width: 36px; height: 36px; flex: none; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 15px; color: #fff; }
   .bubble { position: relative; background: #fff; border-radius: 18px 18px 18px 4px; padding: 9px 13px 7px; box-shadow: 0 1px 1.5px rgba(60, 40, 20, 0.18); flex: 1; min-width: 0; }
   .bubble::before { content: ""; position: absolute; left: -7px; bottom: 0; width: 12px; height: 14px; background: #fff; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
   .bubble .nm { display: flex; justify-content: space-between; gap: 8px; font-size: 14px; font-weight: 800; margin-bottom: 2px; }
@@ -675,7 +676,7 @@
       const COLORS = ['#E17076', '#7BC862', '#E5A64E', '#65AADD', '#A695E7', '#EE7AAE', '#6EC9CB', '#FAA774'];
       const color = (name) => COLORS[[...String(name)].reduce((a, c) => a + c.charCodeAt(0), 0) % COLORS.length];
       const card = (r) =>
-        '<div class="review"><span class="ava" style="background:' + color(r.name) + '">' + esc((r.name || 'У').trim().charAt(0).toUpperCase()) + '</span>' +
+        '<div class="review"><span class="ava" style="background:' + color(r.name) + '">' + esc((r.name || 'У').trim().charAt(0).toUpperCase()) + (r.ava ? '<img loading="lazy" alt="" src="' + API + '/ava/' + encodeURIComponent(r.ava) + '" onerror="this.remove()">' : '') + '</span>' +
         '<div class="bubble"><span class="nm" style="color:' + color(r.name) + '">' + esc(r.name) + (r.rating ? '<span class="stars">' + stars(r.rating) + '</span>' : '') + '</span>' +
         '<p>' + esc(r.text) + '</p><span class="meta">' + esc(r.niche || '') + (r.niche && r.at ? ' · ' : '') + (r.at ? when(r.at) : '') + ' <i>✓✓</i></span></div></div>';
       const items = list.slice(-30).reverse();
