@@ -314,25 +314,49 @@
   .rv-score b { font-family: 'Unbounded', sans-serif; font-size: 34px; line-height: 1; }
   .rv-score .stars { font-size: 20px; color: #D9A94E; }
   .rv-score span { color: var(--muted); font-size: 14.5px; font-weight: 700; }
-  .reviews { display: grid; gap: 14px; }
-  .reviews.run { display: block; overflow: hidden; margin: 0 -16px; padding: 10px 0 18px; -webkit-mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
-  .reviews.run .rv-track { display: flex; gap: 16px; width: max-content; animation: marquee var(--dur, 40s) linear infinite; }
+  .stars { color: #D9A94E; letter-spacing: 1px; font-size: 13px; }
+
+  /* карусель скриншотов: телефоны листаются пальцем */
+  .shots { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 14px 16px 26px; margin: 0 -16px 28px; scrollbar-width: none; }
+  .shots::-webkit-scrollbar { display: none; }
+  .shot { flex: none; width: 220px; aspect-ratio: 9 / 18; border-radius: 34px; padding: 9px; background: linear-gradient(160deg, #3A2C20, #1A120C); box-shadow: 0 22px 44px rgba(42, 31, 23, 0.3), inset 0 0 0 1.5px #5A4632; scroll-snap-align: center; cursor: zoom-in; position: relative; transition: transform .25s; border: 0; }
+  .shot:hover { transform: translateY(-6px) rotate(-1deg); }
+  .shot::before { content: ""; position: absolute; top: 15px; left: 50%; width: 54px; height: 7px; margin-left: -27px; border-radius: 9px; background: #0D0906; z-index: 2; }
+  .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 26px; background: #EFE3CC; }
+  .lightbox { position: fixed; inset: 0; z-index: 100; background: rgba(20, 14, 9, 0.88); display: none; place-items: center; padding: 20px; cursor: zoom-out; backdrop-filter: blur(6px); }
+  .lightbox.on { display: grid; animation: lb-in .25s ease; }
+  .lightbox img { max-width: min(520px, 100%); max-height: 88vh; border-radius: 20px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5); }
+  @keyframes lb-in { from { opacity: 0; } }
+
+  /* отзывы как переписка в Telegram */
+  .tg { border-radius: 28px; overflow: hidden; border: 1px solid #D9BF8A; box-shadow: var(--shadow); background-color: #E8D6AE;
+    background-image: radial-gradient(rgba(122, 85, 32, 0.12) 1.2px, transparent 1.3px), radial-gradient(rgba(255, 255, 255, 0.35) 1.2px, transparent 1.3px); background-size: 22px 22px, 22px 22px; background-position: 0 0, 11px 11px; }
+  .tg-head { display: flex; align-items: center; gap: 12px; padding: 12px 18px; background: rgba(255, 249, 238, 0.92); border-bottom: 1px solid #E2C99A; }
+  .tg-head .tg-ava { width: 40px; height: 40px; border-radius: 50%; background: var(--dark); display: grid; place-items: center; flex: none; }
+  .tg-head .tg-ava span { width: 26px; height: 26px; display: block; }
+  .tg-head b { display: block; font-size: 15.5px; }
+  .tg-head small { color: #3B8ED0; font-size: 13px; font-weight: 600; }
+  .reviews { display: flex; flex-direction: column; gap: 14px; padding: 20px 16px 22px; }
+  .reviews.run { display: block; overflow: hidden; padding: 22px 0; -webkit-mask: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); mask: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
+  .reviews.run .rv-track { display: flex; align-items: flex-end; gap: 18px; width: max-content; animation: marquee var(--dur, 40s) linear infinite; }
   .reviews.run:hover .rv-track, .reviews.run:active .rv-track { animation-play-state: paused; }
-  .reviews.run .review { width: min(340px, 82vw); flex: none; }
-  .review { position: relative; background: var(--card); border: 1px solid var(--line); border-radius: 24px; padding: 24px 22px 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 10px 30px rgba(122, 85, 32, 0.08); overflow: hidden; }
-  .review::before { content: "“"; position: absolute; right: 16px; top: -18px; font-family: Georgia, serif; font-size: 120px; line-height: 1; color: #E9CF95; opacity: .55; pointer-events: none; }
-  .stars { color: #D9A94E; letter-spacing: 2px; font-size: 16px; text-shadow: 0 1px 0 #A87A2C; }
-  .review p { font-size: 15.5px; line-height: 1.6; color: var(--text); display: -webkit-box; -webkit-line-clamp: 8; -webkit-box-orient: vertical; overflow: hidden; }
-  .review .who { display: flex; align-items: center; gap: 12px; margin-top: auto; padding-top: 14px; border-top: 1px dashed var(--line); }
-  .review .ava { width: 44px; height: 44px; flex: none; border-radius: 50%; display: grid; place-items: center; font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 17px; color: #2B2016; background: linear-gradient(160deg, #F3D27E, #C39446); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 4px 10px rgba(184, 134, 47, 0.35); }
-  .review .who b { display: block; font-size: 15px; }
-  .review .who small { color: var(--muted); font-size: 13px; font-weight: 600; }
-  .review .verified { margin-left: auto; font-size: 11.5px; font-weight: 800; letter-spacing: .5px; color: var(--gold-dark); background: #F6E7C6; border-radius: 999px; padding: 5px 9px; white-space: nowrap; }
+  .reviews.run .review { width: min(330px, 80vw); flex: none; }
+  .review { display: flex; align-items: flex-end; gap: 8px; }
+  .review .ava { width: 36px; height: 36px; flex: none; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 15px; color: #fff; }
+  .bubble { position: relative; background: #fff; border-radius: 18px 18px 18px 4px; padding: 9px 13px 7px; box-shadow: 0 1px 1.5px rgba(60, 40, 20, 0.18); flex: 1; min-width: 0; }
+  .bubble::before { content: ""; position: absolute; left: -7px; bottom: 0; width: 12px; height: 14px; background: #fff; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+  .bubble .nm { display: flex; justify-content: space-between; gap: 8px; font-size: 14px; font-weight: 800; margin-bottom: 2px; }
+  .bubble p { font-size: 15px; line-height: 1.45; color: #1F1A14; display: -webkit-box; -webkit-line-clamp: 9; -webkit-box-orient: vertical; overflow: hidden; }
+  .bubble .meta { display: flex; justify-content: flex-end; align-items: center; gap: 6px; margin-top: 3px; font-size: 12px; color: #8C9AA6; }
+  .bubble .meta i { font-style: normal; color: #4FAE4E; letter-spacing: -3px; }
+  .tg-note { text-align: center; font-size: 13px; color: var(--muted); margin-top: 12px; }
+  @media (min-width: 760px) { .shots { margin: 0 -32px 32px; padding: 14px 32px 28px; } .shot { width: 240px; } }
+
   /* бесплатный разбор */
   .diag { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; background: linear-gradient(160deg, #FFF3D9 0%, #F6DFAE 100%); border: 1px solid #E2C17E; border-radius: 28px; padding: 28px 22px; }
   .diag h3 { font-size: 22px; }
   .diag p { color: var(--muted); max-width: 640px; }
-  @media (min-width: 760px) { .reviews:not(.run) { grid-template-columns: repeat(3, 1fr); } .reviews.run { margin: 0 -32px; } .diag { padding: 40px; } }
+  @media (min-width: 760px) { .diag { padding: 40px; } }
 
   /* появление при прокрутке */
   .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
@@ -511,9 +535,17 @@
       <h2>Что говорят <span class="gold">участники</span></h2>
       <div class="rv-score" id="rv-score"></div>
     </div>
-    <div class="reviews" id="reviews"></div>
+    <div class="shots" id="shots" hidden></div>
+    <div id="tg-box" hidden>
+      <div class="tg">
+        <div class="tg-head"><span class="tg-ava"><span data-px="robot"></span></span><div><b>ИИ-практикум · бот</b><small>отзывы участников</small></div></div>
+        <div class="reviews" id="reviews"></div>
+      </div>
+      <p class="tg-note">Отзывы оставлены участниками в Telegram-боте практикума и опубликованы с их согласия</p>
+    </div>
   </div>
 </section>
+<div class="lightbox" id="lightbox" aria-hidden="true"><img alt="Скриншот отзыва"></div>
 
 <!-- ВЕДУЩИЙ -->
 <section style="background:var(--bg-2)">
@@ -629,23 +661,26 @@
   const DIAG = 'https://t.me/ai_praktikum_kostanay_bot?start=diag';
   document.querySelectorAll('[data-diag]').forEach((a) => { a.href = DIAG; a.target = '_blank'; a.rel = 'noopener'; });
 
-  // отзывы из бота
-  fetch('https://ai-praktikum-bot.prosolenko.workers.dev/reviews')
+  // Отзывы из бота: текстовые — как переписка в Telegram, скриншоты (WhatsApp и др.) — каруселью телефонов
+  const API = 'https://ai-praktikum-bot.prosolenko.workers.dev';
+  const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const showReviews = () => { document.getElementById('reviews-section').style.display = ''; };
+  fetch(API + '/reviews')
     .then((r) => r.json())
     .then((list) => {
       if (!Array.isArray(list) || !list.length) return;
-      const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
       const MONTHS = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
-      const when = (iso) => { const d = new Date(iso); return isNaN(d) ? '' : d.getDate() + ' ' + MONTHS[d.getMonth()]; };
-      const stars = (r) => '★'.repeat(Math.max(1, Math.min(5, Math.round(r / 2)))) ;
+      const when = (iso) => { const d = new Date(iso); return isNaN(d) ? '' : d.getDate() + ' ' + MONTHS[d.getMonth()] + ', ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); };
+      const stars = (r) => '★'.repeat(Math.max(1, Math.min(5, Math.round(r / 2))));
+      const COLORS = ['#E17076', '#7BC862', '#E5A64E', '#65AADD', '#A695E7', '#EE7AAE', '#6EC9CB', '#FAA774'];
+      const color = (name) => COLORS[[...String(name)].reduce((a, c) => a + c.charCodeAt(0), 0) % COLORS.length];
       const card = (r) =>
-        '<div class="review">' + (r.rating ? '<span class="stars">' + stars(r.rating) + '</span>' : '<span class="stars">★★★★★</span>') +
-        '<p>' + esc(r.text) + '</p>' +
-        '<div class="who"><span class="ava">' + esc((r.name || 'У').trim().charAt(0).toUpperCase()) + '</span><span><b>' + esc(r.name) + '</b><small>' + esc(r.niche || 'участник практикума') + (r.at ? ' · ' + when(r.at) : '') + '</small></span><span class="verified">✓ из бота</span></div></div>';
+        '<div class="review"><span class="ava" style="background:' + color(r.name) + '">' + esc((r.name || 'У').trim().charAt(0).toUpperCase()) + '</span>' +
+        '<div class="bubble"><span class="nm" style="color:' + color(r.name) + '">' + esc(r.name) + (r.rating ? '<span class="stars">' + stars(r.rating) + '</span>' : '') + '</span>' +
+        '<p>' + esc(r.text) + '</p><span class="meta">' + esc(r.niche || '') + (r.niche && r.at ? ' · ' : '') + (r.at ? when(r.at) : '') + ' <i>✓✓</i></span></div></div>';
       const items = list.slice(-30).reverse();
       const box = document.getElementById('reviews');
       if (items.length >= 3) {
-        // карусель: две копии для бесшовной прокрутки, на наведении/касании — пауза
         box.classList.add('run');
         box.style.setProperty('--dur', Math.max(30, items.length * 9) + 's');
         box.innerHTML = '<div class="rv-track">' + items.map(card).join('') + items.map(card).join('') + '</div>';
@@ -654,9 +689,25 @@
       const avg = rated.length ? rated.reduce((a, r) => a + r.rating, 0) / rated.length : 0;
       const n = items.length, word = n % 10 === 1 && n % 100 !== 11 ? 'отзыв' : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? 'отзыва' : 'отзывов';
       document.getElementById('rv-score').innerHTML = (avg ? '<b class="gold">' + avg.toFixed(1).replace('.', ',') + '</b><span class="stars">' + stars(avg) + '</span><span>средняя оценка из 10 · ' : '<span>') + n + ' ' + word + ' участников</span>';
-      document.getElementById('reviews-section').style.display = '';
+      document.getElementById('tg-box').hidden = false;
+      showReviews();
     })
     .catch(() => {});
+  fetch(API + '/shots')
+    .then((r) => r.json())
+    .then((list) => {
+      if (!Array.isArray(list) || !list.length) return;
+      const box = document.getElementById('shots');
+      box.innerHTML = list.slice().reverse().map((x) => '<button class="shot" type="button" aria-label="Открыть скриншот отзыва"><img loading="lazy" alt="Скриншот отзыва" src="' + API + '/shot/' + encodeURIComponent(x.id) + '"></button>').join('');
+      box.hidden = false;
+      showReviews();
+    })
+    .catch(() => {});
+  // скрин крупно по нажатию
+  const lb = document.getElementById('lightbox');
+  document.getElementById('shots').addEventListener('click', (e) => { const img = e.target.closest('.shot')?.querySelector('img'); if (!img) return; lb.querySelector('img').src = img.src; lb.classList.add('on'); });
+  lb.addEventListener('click', () => lb.classList.remove('on'));
+  addEventListener('keydown', (e) => { if (e.key === 'Escape') lb.classList.remove('on'); });
   document.querySelectorAll('[data-wa]').forEach((a) => { a.href = WA; a.target = '_blank'; a.rel = 'noopener'; });
   document.querySelectorAll('[data-tg]').forEach((a) => { a.href = TG; a.target = '_blank'; a.rel = 'noopener'; });
 
@@ -831,7 +882,7 @@
     (function follow() { gx += (mx - gx) * 0.12; gy += (my - gy) * 0.12; glow.style.transform = `translate(${gx}px, ${gy}px)`; requestAnimationFrame(follow); })();
 
     // карточки наклоняются за курсором, по ним скользит блик
-    const tiltable = () => document.querySelectorAll('.card, .review, .detail, .step, .who-item, .fact, .host');
+    const tiltable = () => document.querySelectorAll('.card, .detail, .step, .who-item, .fact, .host');
     function bindTilt(el) {
       if (el.dataset.tilt) return;
       el.dataset.tilt = 1; el.classList.add('tilt');
