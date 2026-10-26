@@ -589,6 +589,54 @@
   </div>
 </section>
 
+<!-- ДВА ФОРМАТА -->
+<style>
+  .formats { display: grid; gap: 16px; }
+  @media (min-width: 760px) { .formats { grid-template-columns: 1fr 1fr; } }
+  .fmt { padding: 26px 24px; border-radius: 24px; background: var(--bg-2); border: 1px solid rgba(243, 212, 142, .25); display: flex; flex-direction: column; gap: 12px; }
+  .fmt.main { border-color: rgba(243, 212, 142, .6); box-shadow: 0 20px 60px rgba(243, 193, 75, .12); }
+  .fmt .tag { font-size: 13px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--gold, #F3D48E); }
+  .fmt h3 { margin: 0; font-size: 24px; }
+  .fmt .sum { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 40px; line-height: 1; }
+  .fmt ul { margin: 0; padding-left: 20px; color: var(--muted, #b8bdd0); line-height: 1.5; }
+  .fmt .btn { margin-top: auto; text-align: center; }
+</style>
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Два формата</p>
+      <h2>Приходи на встречу <span class="gold">или проходи сам</span></h2>
+    </div>
+    <div class="formats stagger">
+      <div class="fmt main">
+        <span class="tag">📍 Офлайн · Костанай</span>
+        <h3>Живая встреча со мной</h3>
+        <div class="sum gold">5 000 ₸</div>
+        <ul>
+          <li>Четверг, 29 октября, 18:00 · A-LIFE, Аль-Фараби 128</li>
+          <li>90 минут: делаем всё вместе на твоём телефоне</li>
+          <li>Отвечаю на вопросы и помогаю каждому на месте</li>
+          <li>Все промпты и практики остаются у тебя в боте</li>
+        </ul>
+        <a class="btn btn-gold" data-tg-fmt="off" href="#">Записаться на встречу</a>
+      </div>
+      <div class="fmt">
+        <span class="tag">💻 Онлайн · самостоятельно</span>
+        <h3>Проходишь сам, в своём темпе</h3>
+        <div class="sum">2 000 ₸</div>
+        <ul>
+          <li>Это не трансляция: ты получаешь готовый продукт и проходишь его сам, когда удобно</li>
+          <li>Все 7 практик с пошаговыми инструкциями и готовыми промптами в Telegram-боте и мини-приложении</li>
+          <li>Доступ открывается сразу после оплаты и остаётся навсегда</li>
+          <li>Подходит, если не получается прийти или ты не из Костаная</li>
+        </ul>
+        <a class="btn btn-soft" data-tg-fmt="on" href="#">Купить онлайн-доступ</a>
+      </div>
+    </div>
+    <p class="note" style="text-align:center;margin-top:18px">🎁 Не уверен? Первая практика — бесплатно: нажми любую кнопку, бот её пришлёт.</p>
+  </div>
+</section>
+
 <!-- БЕСПЛАТНЫЙ РАЗБОР -->
 <section>
   <div class="wrap">
@@ -610,6 +658,7 @@
     </div>
     <div class="reveal">
       <details><summary>Как записаться?</summary><p>Нажмите «Записаться на практикум» — откроется Telegram-бот. Ответьте на 4 коротких вопроса, подпишитесь на канал практикума и оплатите участие — бот пришлёт реквизиты и напомнит о встрече.</p></details>
+      <details><summary>Чем отличается офлайн от онлайна?</summary><p>Офлайн — живая встреча в Костанае: делаем всё вместе, я помогаю каждому на месте (5 000 ₸). Онлайн — это не трансляция: ты покупаешь готовые практики с инструкциями и промптами и проходишь их сам в Telegram-боте, в своём темпе (2 000 ₸). Доступ открывается сразу после оплаты.</p></details>
       <details><summary>Я ни разу не пользовался ИИ. Мне будет сложно?</summary><p>Нет. Начинаем с самого простого, все промпты будут готовыми — нажал, скопировал, вставил. Опыт не нужен.</p></details>
       <details><summary>Что взять с собой?</summary><p>Телефон с зарядкой и интернетом. Если можешь — заранее установи ChatGPT и зарегистрируйся, чтобы не тратить время на месте.</p></details>
       <details><summary>У меня нет своего бизнеса. Мне подойдёт?</summary><p>Да. Маркетологи и SMM-специалисты смогут применять всё для клиентов, а блок «ИИ для жизни» пригодится каждому.</p></details>
@@ -638,9 +687,10 @@
         <div class="price" role="img" aria-label="5 000 тенге"><span class="new gold">5 000 ₸</span><span class="half a" aria-hidden="true">20 000 ₸</span><span class="half b" aria-hidden="true">20 000 ₸</span><span class="crack" aria-hidden="true"></span><span class="burst" aria-hidden="true"><i>✦</i><i>✦</i><i>✦</i></span></div>
       </div>
       <div class="ctas">
-        <a class="btn btn-gold" data-tg href="#">Записаться на практикум</a>
-        <a class="btn btn-soft" data-wa href="#">Вопрос в WhatsApp</a>
+        <a class="btn btn-gold" data-tg-fmt="off" href="#">Офлайн · 5 000 ₸</a>
+        <a class="btn btn-soft" data-tg-fmt="on" href="#">Онлайн, самостоятельно · 2 000 ₸</a>
       </div>
+      <p class="note"><a data-wa href="#" style="color:inherit">Вопрос в WhatsApp</a></p>
       <p class="note">Мест немного: практикум в формате живой работы, каждому нужно успеть помочь.</p>
     </div>
   </div>
@@ -662,6 +712,8 @@
   const src = (new URLSearchParams(location.search).get('src') || '').replace(/[^a-z0-9_]/gi, '').slice(0, 20);
   const TG = 'https://t.me/ai_praktikum_kostanay_bot?start=' + (src ? 'landing_' + src : 'landing');
   const DIAG = 'https://t.me/ai_praktikum_kostanay_bot?start=diag';
+  // кнопки форматов: бот сразу ведёт в офлайн (5 000) или онлайн (2 000), метка источника сохраняется
+  document.querySelectorAll('[data-tg-fmt]').forEach((a) => { a.href = TG + '_' + a.dataset.tgFmt; a.target = '_blank'; a.rel = 'noopener'; });
   document.querySelectorAll('[data-diag]').forEach((a) => { a.href = DIAG; a.target = '_blank'; a.rel = 'noopener'; });
 
   // Отзывы из бота: текстовые — как переписка в Telegram, скриншоты (WhatsApp и др.) — каруселью телефонов
